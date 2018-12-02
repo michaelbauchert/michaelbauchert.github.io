@@ -8,7 +8,7 @@
 
 <h2>The Button Element</h2>
 <button type="button" onclick="sdk.send('test')">Click Me!</button>
- 
+<p id="chirpHere"></p>
  <script>
 const { Chirp, toAscii } = ChirpConnectSDK;
 let sdk;
@@ -21,6 +21,7 @@ Chirp({
   onReceived: data => {
     if (data.length > 0) {
       console.log(data)
+	  document.getElementById("chirpHere").innerHTML = data;
     }
   }
 }).then(sdk => {
