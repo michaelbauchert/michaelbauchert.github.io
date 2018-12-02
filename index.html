@@ -2,6 +2,7 @@
 <html>
 <head>
 <script src="https://public.chirp.io/wasm/latest/chirp-connect.js"></script>
+<script src="Tone.min.js"></script>
 <!--script src="StartAudioContext.js"></script-->
 </head>
 <body>
@@ -10,6 +11,9 @@
 <button type="button" onclick="sdk.send('test')">Click Me!</button>
 <p id="chirpHere"></p>
  <script>
+ var player = new Tone.Player("vs_carbon_loop2.wav").toMaster();
+ player.loop = true;
+ 
 const { Chirp, toAscii } = ChirpConnectSDK;
 let sdk;
 
@@ -22,6 +26,8 @@ Chirp({
     if (data.length > 0) {
       console.log(data)
 	  document.getElementById("chirpHere").innerHTML = data;
+	  if(toAscii(data) === "go")
+		player.start();		
     }
   }
 }).then(sdk => {
