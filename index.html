@@ -10,7 +10,8 @@
 <button type="button" onclick="sdk.send('test')">Click Me!</button>
  
  <script>
-const { Chirp } = ChirpConnectSDK;
+const { Chirp, toAscii } = ChirpConnectSDK;
+let sdk;
 
 Chirp({
   key: 'CHIRP_APPLICATION_KEY',
