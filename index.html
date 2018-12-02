@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://public.chirp.io/wasm/latest/chirp-connect.js"></script>
+<!--script src="StartAudioContext.js"></script-->
+</head>
+<body>
+
+<h2>The Button Element</h2>
+<button type="button" onclick="start()">Click Me!</button>
+ 
+ <script>
+ async function start() {
+  const sdk = await ChirpConnectSDK.Chirp({
+    key: '3DFDefb87Ef9D781dcc2A9887',
+    onStateChanged: (previous, current) => {
+      console.log(current)
+    },
+    onReceived: data => {
+      console.log(data)
+    }
+  });
+  sdk.sendRandom()
+}
+
+//start()
+</script>
+</body>
+</html>
