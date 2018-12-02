@@ -26,8 +26,10 @@ Chirp({
     if (data.length > 0) {
       console.log(data)
 	  document.getElementById("chirpHere").innerHTML = toAscii(data);
-	  if(toAscii(data) === "go")
-		player.start();		
+	  if(toAscii(data) === "go") {
+		player.start();
+		document.getElementById("chirpHere").innerHTML = document.getElementById("chirpHere").innerHTML + " but not working";
+	  }
     }
   }
 }).then(sdk => {
