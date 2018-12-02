@@ -26,14 +26,15 @@ Chirp({
     if (data.length > 0) {
       console.log(data)
 	  document.getElementById("chirpHere").innerHTML = toAscii(data);
-	  if(toAscii(data) === "go") {
-		player.start();
-		document.getElementById("chirpHere").innerHTML = document.getElementById("chirpHere").innerHTML + " but not working";
+	  if(toAscii(data) === "start") {
+		player.start();		
+	  } else if(toAscii(data) === "stop") {
+		player.stop();
 	  }
     }
   }
 }).then(sdk => {
-  sdk.send([0, 1, 2, 3]);
+  //sdk.send([0, 1, 2, 3]);
 }).catch(console.error)
 </script>
 </body>
