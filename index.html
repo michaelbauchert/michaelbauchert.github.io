@@ -10,20 +10,21 @@
 <button type="button" onclick="sdk.send('test')">Click Me!</button>
  
  <script>
- async function start() {
-  const sdk = await ChirpConnectSDK.Chirp({
-    key: '3DFDefb87Ef9D781dcc2A9887',
-    onStateChanged: (previous, current) => {
-      console.log(current)
-    },
-    onReceived: data => {
+const { Chirp } = ChirpConnectSDK;
+
+Chirp({
+  key: 'CHIRP_APPLICATION_KEY',
+  onStateChanged: (previous, current) => {
+    console.log(current)
+  },
+  onReceived: data => {
+    if (data.length > 0) {
       console.log(data)
     }
-  });
-  sdk.sendRandom()
-}
-
-start()
+  }
+}).then(sdk => {
+  sdk.send([0, 1, 2, 3]);
+}).catch(console.error)
 </script>
 </body>
 </html>
