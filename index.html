@@ -14,6 +14,8 @@
  var player = new Tone.Player("vs_carbon_loop2.wav").toMaster();
  player.loop = true;
  
+ var startDelay = 1 - player.context.baseLatency;
+ 
 const { Chirp, toAscii } = ChirpConnectSDK;
 let sdk;
 
@@ -27,7 +29,7 @@ Chirp({
       console.log(data)
 	  document.getElementById("chirpHere").innerHTML = toAscii(data);
 	  if(toAscii(data) === "start") {
-		player.start();		
+		player.start(startDelay);		
 	  } else if(toAscii(data) === "stop") {
 		player.stop();
 	  }
