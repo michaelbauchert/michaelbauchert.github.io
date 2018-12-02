@@ -25,7 +25,7 @@ Chirp({
   onReceived: data => {
     if (data.length > 0) {
       console.log(data)
-	  document.getElementById("chirpHere").innerHTML = data;
+	  document.getElementById("chirpHere").innerHTML = toAscii(data);
 	  if(toAscii(data) === "go")
 		player.start();		
     }
