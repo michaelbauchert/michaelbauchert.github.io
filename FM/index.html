@@ -60,10 +60,32 @@
         freqBY.rampTo(Nexus.mtof(b.y));
       });
 
+      document.querySelector('#positionA').addEventListener('touchstart', function(e) {
+          envA.triggerAttack();
+      }, false);
+
+      document.querySelector('#positionA').addEventListener('touchend', function(e) {
+          envA.triggerRelease();
+      }, false);
+
+      document.querySelector('#positionB').addEventListener('touchstart', function(e) {
+          envB.triggerAttack();
+      }, false);
+
+      document.querySelector('#positionB').addEventListener('touchend', function(e) {
+          envB.triggerRelease();
+      }, false);
+
+      var panA = new Tone.Panner(-1).toMaster();
+      var panB = new Tone.Panner(1).toMaster();
+
+      var envA = new Tone.AmplitudeEnvelope (0.5 , 0.1 , 0.8 , 1).connect(panA);
+      var envB = new Tone.AmplitudeEnvelope (0.5 , 0.1 , 0.8 , 1).connect(panB);
+
       var oscAX = new Tone.Oscillator (0 , 'sine').start();
-      var oscAY = new Tone.Oscillator (0 , 'sine').start();
+      var oscAY = new Tone.Oscillator (0 , 'sine').start().connect(envA);
       var oscBX = new Tone.Oscillator (0 , 'sine').start();
-      var oscBY = new Tone.Oscillator (0 , 'sine').start().toMaster();
+      var oscBY = new Tone.Oscillator (0 , 'sine').start().connect(envB);
 
       var multAXAY = new Tone.Multiply().connect(oscAY.frequency);
       var multAYBX = new Tone.Multiply().connect(oscBX.frequency);
@@ -83,7 +105,7 @@
       var normBX = new Tone.AudioToGain().connect(scaleBX);
 
       oscAX.connect(normAX);
-      oscAY.connect(normAY);
+      envA.connect(normAY);
       oscBX.connect(normBX);
 
     </script>

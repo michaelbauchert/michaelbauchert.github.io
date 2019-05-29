@@ -51,23 +51,13 @@ class resumeAudio extends HTMLElement {
 
     let circle = this.querySelector("circle");
 
-    this.addEventListener('touchstart', function(e) {
-      circle.style.cx = e.touches[0].clientX;
-      circle.style.cy = e.touches[0].clientY;
-      startContext();
-    }, false);
-
-    this.addEventListener('mousedown', function(e) {
+    this.addEventListener('click', function(e) {
       circle.style.cx = e.clientX;
       circle.style.cy = e.clientY;
-      startContext();
-    }, false);
-
-    function startContext() {
+      Tone.context.resume();
       circle.classList.add('animate');
       setTimeout(function(){ resumeAudio.parentNode.removeChild(resumeAudio); }, 1000);
-      Tone.context.resume();
-    }
+    }, false);
 
   }//end constructor
 }//end HTMLElement
