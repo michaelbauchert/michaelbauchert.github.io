@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>FM</title>
+
+    <script type="module" src="../custom-components/resume-audio.js"></script>
+  </head>
+  <body style="overflow:hidden; padding: 0; margin: 0">
+
+    <resume-audio>
+      <h1>FM</h1>
+      <strong>touch to start</strong>
+    </resume-audio>
+
+    <div style="width:100vw; height:100vh; background-color: green; clip-path: url(#resumeAudio); position: absolute;">
+      <div id="positionA">
+      </div>
+      <div id="positionB">
+      </div>
+
+    </div>
+
+
+    <script type="text/javascript" src="Tone.js"></script>
+    <script type="text/javascript" src="NexusUI.js"></script>
+    <script type="text/javascript">
+      var positionA = new Nexus.Position('#positionA',{
+        'size': [window.innerWidth, window.innerHeight/2],
+        'mode': 'absolute',  // "absolute" or "relative"
+        'x': 64,  // initial x value
+        'minX': 0,
+        'maxX': 127,
+        'stepX': 0,
+        'y': 64,  // initial y value
+        'minY': 0,
+        'maxY': 127,
+        'stepY': 0
+      });
+      var positionB = new Nexus.Position('#positionB',{
+        'size': [window.innerWidth, window.innerHeight/2],
+        'mode': 'absolute',  // "absolute" or "relative"
+        'x': 64,  // initial x value
+        'minX': 0,
+        'maxX': 127,
+        'stepX': 0,
+        'y': 64,  // initial y value
+        'minY': 0,
+        'maxY': 127,
+        'stepY': 0
+      });
+
+      positionA.on('change',function(a) {
+        freqAX.rampTo(Nexus.mtof(a.x));
+        freqAY.rampTo(Nexus.mtof(a.y));
+      });
+
+      positionB.on('change',function(b) {
+        freqBX.rampTo(Nexus.mtof(b.x));
+        freqBY.rampTo(Nexus.mtof(b.y));
+      });
+
+      var oscAX = new Tone.Oscillator (0 , 'sine').start();
+      var oscAY = new Tone.Oscillator (0 , 'sine').start();
+      var oscBX = new Tone.Oscillator (0 , 'sine').start();
+      var oscBY = new Tone.Oscillator (0 , 'sine').start().toMaster();
+
+      var multAXAY = new Tone.Multiply().connect(oscAY.frequency);
+      var multAYBX = new Tone.Multiply().connect(oscBX.frequency);
+      var multBXBY = new Tone.Multiply().connect(oscBY.frequency);
+
+      var freqAX = new Tone.Signal (0 , 'Hertz').connect(oscAX.frequency);
+      var freqAY = new Tone.Signal (0 , 'Hertz').connect(multAXAY, 0, 0);
+      var freqBX = new Tone.Signal (0 , 'Hertz').connect(multAYBX, 0, 0);
+      var freqBY = new Tone.Signal (0 , 'Hertz').connect(multBXBY, 0, 0);
+
+      var scaleAX = new Tone.ScaleExp (0.5, 2, 2).connect(multAXAY, 0, 1);
+      var scaleAY = new Tone.ScaleExp (0.5, 2, 2).connect(multAYBX, 0, 1);
+      var scaleBX = new Tone.ScaleExp (0.5, 2, 2).connect(multBXBY, 0, 1);
+
+      var normAX = new Tone.AudioToGain().connect(scaleAX);
+      var normAY = new Tone.AudioToGain().connect(scaleAY);
+      var normBX = new Tone.AudioToGain().connect(scaleBX);
+
+      oscAX.connect(normAX);
+      oscAY.connect(normAY);
+      oscBX.connect(normBX);
+
+    </script>
+
+  </body>
+</html>
