@@ -54,9 +54,29 @@ class resumeAudio extends HTMLElement {
     this.addEventListener('click', function(e) {
       circle.style.cx = e.clientX;
       circle.style.cy = e.clientY;
-      Tone.context.resume();
-      circle.classList.add('animate');
-      setTimeout(function(){ resumeAudio.parentNode.removeChild(resumeAudio); }, 1000);
+      Tone.context.resume().then(function()
+      {
+        circle.classList.add('animate');
+        setTimeout(function(){ resumeAudio.parentNode.removeChild(resumeAudio); }, 1000);
+      });      
+    }, false);
+    
+    this.addEventListener('touchstart', function(e) {
+    circle.style.cx = e.touches[0].clientX;
+    circle.style.cy = e.touches[0].clientY;
+     Tone.context.resume().then(function()
+      {
+        circle.classList.add('animate');
+        setTimeout(function(){ resumeAudio.parentNode.removeChild(resumeAudio); }, 1000);
+      });  
+    }, false);
+    
+     this.addEventListener('touchend', function(e) {
+     Tone.context.resume().then(function()
+      {
+        circle.classList.add('animate');
+        setTimeout(function(){ resumeAudio.parentNode.removeChild(resumeAudio); }, 1000);
+      });  
     }, false);
 
   }//end constructor
