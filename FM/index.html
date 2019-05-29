@@ -60,20 +60,24 @@
         freqBY.rampTo(Nexus.mtof(b.y));
       });
 
-      document.querySelector('#positionA').addEventListener('touchstart', function(e) {
+      var circle = document.querySelectorAll('svg');
+
+      circle[0].addEventListener('touchstart', function(e) {
           envA.triggerAttack();
       }, false);
 
-      document.querySelector('#positionA').addEventListener('touchend', function(e) {
+      circle[0].addEventListener('touchend', function(e) {
           envA.triggerRelease();
       }, false);
 
-      document.querySelector('#positionB').addEventListener('touchstart', function(e) {
+      circle[1].addEventListener('touchstart', function(e) {
           envB.triggerAttack();
+          console.log('startB');
       }, false);
 
-      document.querySelector('#positionB').addEventListener('touchend', function(e) {
+      circle[1].addEventListener('touchend', function(e) {
           envB.triggerRelease();
+          console.log('endB');
       }, false);
 
       var panA = new Tone.Panner(-1).toMaster();
