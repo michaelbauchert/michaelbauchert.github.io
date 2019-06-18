@@ -1235,7 +1235,7 @@ canvas.addEventListener('mousemove', e => {
 
     //MB Mod: change osc frequencies
     pointers[0].freqX.rampTo((pointers[0].x / window.innerWidth * 64)^2);
-    pointers[0].freqY.rampTo(pointers[0].y / window.innerHeight * 64)^2);
+    pointers[0].freqY.rampTo((pointers[0].y / window.innerHeight * 64)^2);
 });
 
 canvas.addEventListener('touchmove', e => {
