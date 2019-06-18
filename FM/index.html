@@ -1,118 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>FM</title>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Cache-Control" content="no-cache">
 
-    <script type="module" src="../custom-components/resume-audio.js"></script>
-  </head>
-  <body style="overflow:hidden; padding: 0; margin: 0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
 
-    <resume-audio>
-      <h1>FM</h1>
-      <strong>touch to start</strong>
-    </resume-audio>
+        <link rel="apple-touch-icon" href="logo.png">
+        <link rel="icon" href="logo.png">
 
-    <div style="width:100vw; height:100vh; background-color: green; clip-path: url(#resumeAudio); position: absolute;">
-      <div id="positionA">
-      </div>
-      <div id="positionB">
-      </div>
+        <title>Fucking Magic</title>
+        <meta name="description" content="A WebGL fluid simulation that works in mobile browsers.">
 
-    </div>
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Webgl Fluid Simulation">
+        <meta property="og:description" content="A WebGL fluid simulation that works in mobile browsers.">
+        <meta property="og:url" content="https://paveldogreat.github.io/WebGL-Fluid-Simulation/">
+        <meta property="og:image" content="https://paveldogreat.github.io/WebGL-Fluid-Simulation/logo.png">
 
+        <script type="text/javascript" src="dat.gui.min.js"></script>
+        <style>
+            * {
+                user-select: none;
+            }
 
-    <script type="text/javascript" src="Tone.js"></script>
-    <script type="text/javascript" src="NexusUI.js"></script>
-    <script type="text/javascript">
-      var positionA = new Nexus.Position('#positionA',{
-        'size': [window.innerWidth, window.innerHeight/2],
-        'mode': 'absolute',  // "absolute" or "relative"
-        'x': 64,  // initial x value
-        'minX': 0,
-        'maxX': 127,
-        'stepX': 0,
-        'y': 64,  // initial y value
-        'minY': 0,
-        'maxY': 127,
-        'stepY': 0
-      });
-      var positionB = new Nexus.Position('#positionB',{
-        'size': [window.innerWidth, window.innerHeight/2],
-        'mode': 'absolute',  // "absolute" or "relative"
-        'x': 64,  // initial x value
-        'minX': 0,
-        'maxX': 127,
-        'stepX': 0,
-        'y': 64,  // initial y value
-        'minY': 0,
-        'maxY': 127,
-        'stepY': 0
-      });
+            html, body {
+                overflow: hidden;
+            }
 
-      positionA.on('change',function(a) {
-        freqAX.rampTo(Nexus.mtof(a.x));
-        freqAY.rampTo(Nexus.mtof(a.y));
-      });
+            body {
+                margin: 0;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+            }
 
-      positionB.on('change',function(b) {
-        freqBX.rampTo(Nexus.mtof(b.x));
-        freqBY.rampTo(Nexus.mtof(b.y));
-      });
+            canvas {
+                width: 100%;
+                height: 100%;
+                clip-path: url(#resumeAudio);
+                position: absolute;
+            }
 
-      var circle = document.querySelectorAll('svg');
+            .dg {
+                opacity: 0.9;
+            }
 
-      circle[0].addEventListener('touchstart', function(e) {
-          envA.triggerAttack();
-      }, false);
+            .dg .property-name {
+                overflow: visible;
+            }
 
-      circle[0].addEventListener('touchend', function(e) {
-          envA.triggerRelease();
-      }, false);
+            @font-face {
+                font-family: 'iconfont';
+                src: url('iconfont.ttf') format('truetype');
+            }
 
-      circle[1].addEventListener('touchstart', function(e) {
-          envB.triggerAttack();
-          console.log('startB');
-      }, false);
+            .bigFont {
+                font-size: 150%;
+                color: #8C8C8C;
+            }
 
-      circle[1].addEventListener('touchend', function(e) {
-          envB.triggerRelease();
-          console.log('endB');
-      }, false);
+            .cr.function.appBigFont {
+                font-size: 150%;
+                line-height: 27px;
+                background-color: #2F4F4F;
+            }
 
-      var panA = new Tone.Panner(-1).toMaster();
-      var panB = new Tone.Panner(1).toMaster();
+            .cr.function.appBigFont .property-name {
+                float: none;
+            }
 
-      var envA = new Tone.AmplitudeEnvelope (0.5 , 0.1 , 0.8 , 1).connect(panA);
-      var envB = new Tone.AmplitudeEnvelope (0.5 , 0.1 , 0.8 , 1).connect(panB);
+            .cr.function.appBigFont .icon {
+                position: sticky;
+                bottom: 27px;
+            }
 
-      var oscAX = new Tone.Oscillator (0 , 'sine').start();
-      var oscAY = new Tone.Oscillator (0 , 'sine').start().connect(envA);
-      var oscBX = new Tone.Oscillator (0 , 'sine').start();
-      var oscBY = new Tone.Oscillator (0 , 'sine').start().connect(envB);
+            .icon {
+                font-family: 'iconfont';
+                font-size: 130%;
+                float: right;
+            }
 
-      var multAXAY = new Tone.Multiply().connect(oscAY.frequency);
-      var multAYBX = new Tone.Multiply().connect(oscBX.frequency);
-      var multBXBY = new Tone.Multiply().connect(oscBY.frequency);
+            .twitter:before {
+                content: 'a';
+            }
 
-      var freqAX = new Tone.Signal (0 , 'Hertz').connect(oscAX.frequency);
-      var freqAY = new Tone.Signal (0 , 'Hertz').connect(multAXAY, 0, 0);
-      var freqBX = new Tone.Signal (0 , 'Hertz').connect(multAYBX, 0, 0);
-      var freqBY = new Tone.Signal (0 , 'Hertz').connect(multBXBY, 0, 0);
+            .github:before {
+                content: 'b';
+            }
 
-      var scaleAX = new Tone.ScaleExp (0.5, 2, 2).connect(multAXAY, 0, 1);
-      var scaleAY = new Tone.ScaleExp (0.5, 2, 2).connect(multAYBX, 0, 1);
-      var scaleBX = new Tone.ScaleExp (0.5, 2, 2).connect(multBXBY, 0, 1);
+            .app:before {
+                content: 'c';
+            }
 
-      var normAX = new Tone.AudioToGain().connect(scaleAX);
-      var normAY = new Tone.AudioToGain().connect(scaleAY);
-      var normBX = new Tone.AudioToGain().connect(scaleBX);
+            .discord:before {
+                content: 'd';
+            }
+        </style>
+        <script type="module" src="../custom-components/resume-audio.js"></script>
+        <script type="text/javascript" src="Tone.js"></script>
+    </head>
+    <body>
+      <resume-audio>
+        <h1>FM</h1>
+        <strong>touch to start</strong>
+      </resume-audio>
 
-      oscAX.connect(normAX);
-      envA.connect(normAY);
-      oscBX.connect(normBX);
-
-    </script>
-
-  </body>
+        <canvas></canvas>
+        <script src="./script.js"></script>
+    </body>
 </html>
