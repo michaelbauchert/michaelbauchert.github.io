@@ -42,7 +42,8 @@ function pointerPrototype () {//MB Mod: add fm synth to the pointer
     this.freqX = new Tone.Signal (0 , 'Hertz').connect(this.oscX.frequency);
     this.freqY = new Tone.Signal (0 , 'Hertz').connect(this.fmodXY, 0, 0);
     this.scaleX = new Tone.ScaleExp (0.5, 2, 2).connect(this.fmodXY, 0, 1);
-    this.normX = new Tone.AudioToGain().connect(scaleX);
+    this.normX = new Tone.AudioToGain().connect(this.scaleX);
+
     this.oscX.connect(this.normX);
 }
 
@@ -1234,8 +1235,9 @@ canvas.addEventListener('mousemove', e => {
     pointers[0].y = e.offsetY;
 
     //MB Mod: change osc frequencies
-    pointers[0].freqX.rampTo((pointers[0].x / window.innerWidth * 64)^2);
-    pointers[0].freqY.rampTo((pointers[0].y / window.innerHeight * 64)^2);
+    //console.log(Math.pow(pointers[0].x / window.innerWidth * 64, 2));
+    pointers[0].freqX.rampTo(Math.pow(pointers[0].x / window.innerWidth * 64, 2));
+    pointers[0].freqY.rampTo(Math.pow(pointers[0].y / window.innerHeight * 64, 2));
 });
 
 canvas.addEventListener('touchmove', e => {
@@ -1250,8 +1252,9 @@ canvas.addEventListener('touchmove', e => {
         pointer.y = touches[i].pageY;
 
         //MB Mod: change osc frequencies
-        pointer.freqX.rampTo((pointer.x / window.innerWidth * 64)^2);
-        pointer.freqY.rampTo(pointer.y / window.innerHeight * 64)^2);
+        //console.log(Math.pow(pointers[0].y / window.innerHeight * 64, 2));
+        pointer.freqX.rampTo(Math.pow(pointer.x / window.innerWidth * 64, 2));
+        pointer.freqY.rampTo(Math.pow(pointer.y / window.innerHeight * 64, 2));
     }
 }, false);
 
@@ -1268,13 +1271,14 @@ canvas.addEventListener('touchstart', e => {
     for (let i = 0; i < touches.length; i++) {
         if (i >= pointers.length) {
             pointers.push(new pointerPrototype());
+            console.log(i);
 
             //MB Mod: hook up new pointer to modulate previous
             let newPointer = pointers[i];
             let prevPointer = pointers[i-1];
 
             prevPointer.freqX.disconnect(prevPointer.oscX.frequency);
-            newPointer.fmodLink new Tone.Multiply().connect(prevPointer.oscX.frequency);
+            newPointer.fmodLink = new Tone.Multiply().connect(prevPointer.oscX.frequency);
             newPointer.scaleY =  new Tone.ScaleExp (0.5, 2, 2).connect(newPointer.fmodLink, 0, 1);
             newPointer.normY = new Tone.AudioToGain().connect(newPointer.scaleY);
             newPointer.env.connect(newPointer.normY);
